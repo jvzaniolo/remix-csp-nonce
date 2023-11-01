@@ -8,12 +8,15 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { useContext } from "react";
+import { NonceContext } from "./NonceContext";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
 export default function App() {
+  const cspNonce = useContext(NonceContext);
   return (
     <html lang="en">
       <head>
@@ -24,9 +27,9 @@ export default function App() {
       </head>
       <body>
         <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <ScrollRestoration nonce={cspNonce} />
+        <Scripts nonce={cspNonce} />
+        <LiveReload nonce={cspNonce} />
       </body>
     </html>
   );
